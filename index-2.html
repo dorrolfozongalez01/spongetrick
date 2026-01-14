@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invitación Cumple Kevin</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    video {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+      flex-direction: column;
+      text-align: center;
+      color: white;
+    }
+
+    .overlay button {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background-color: #26FF81;
+      color: black;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: 0.3s ease;
+    }
+
+    .overlay button:hover {
+      background-color: #FFDB26;
+    }
+
+    .content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 1.5rem;
+      z-index: 1;
+    }
+
+    .fade {
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+
+    .show {
+      opacity: 1;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .btn {
+      margin-top: 1rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      background-color: #2F26FF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      animation: bounce 1.8s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+  </style>
+</head>
+<body>
+
+  <video id="videoBg" loop playsinline>
+    <source src="video.mp4" type="video/mp4">
+    Tu navegador no soporta video.
+  </video>
+
+  <div class="overlay" id="startOverlay">
+    <h1>🎉 Invitación Especial 🎉</h1>
+    <p>Presiona para comenzar</p>
+    <button onclick="startInvitation()">Iniciar</button>
+  </div>
+
+  <div class="content">
+    <div id="temporales">
+      <p id="t1" class="fade">¡Estás invitado!</p>
+      <p id="t2" class="fade">A la fiesta de cumpleaños de Kevin</p>
+      <p id="t3" class="fade">Fecha: 19 de julio</p>
+      <p id="t4" class="fade">Hora: 2:30 PM</p>
+      <p id="t5" class="fade">Lugar: Calle Francisco Villa 14B, Valle de Anáhuac,<br>55210 Ecatepec de Morelos, Méx.</p>
+    </div>
+
+    <div id="final" class="fade hidden">
+      <h1 style="color: #FFDB26;">¡Estás invitado!</h1>
+      <h2 style="color: #26FF81;">A la fiesta de cumpleaños de Kevin 🎂</h2>
+      <p><strong style="color:#1A17FA">📅 Fecha:</strong> <span style="color:#A59446">19 de julio</span></p>
+      <p><strong style="color:#1A17FA">🕝 Hora:</strong> <span style="color:#A59446">2:30 PM</span></p>
+      <p><strong style="color:#1A17FA">📍 Lugar:</strong> <span style="color:#A59446">Calle Francisco Villa 14B, Valle de Anáhuac,<br>55210 Ecatepec de Morelos, Méx.</span></p>
+      <p style="color:#00FFB2; margin-top: 1rem;">
+        Ven a celebrar un día inolvidable con comida, música y mucha alegría 🎶🍰<br>
+        ¡Te esperamos con los brazos abiertos!
+      </p>
+      <button class="btn" onclick="openMaps()">Ver ubicación en Google Maps 📍</button>
+      <button class="btn" onclick="addToCalendar()">Agendar en Google Calendar 📅</button>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById('videoBg');
+    const overlay = document.getElementById('startOverlay');
+
+    function startInvitation() {
+      overlay.style.display = 'none';
+      video.muted = false;
+      video.setAttribute('autoplay', '');
+      video.play().catch(err => console.log("Error al reproducir video:", err));
+    }
+
+    video.addEventListener('timeupdate', () => {
+      const t = video.currentTime;
+      if (t >= 24) document.getElementById('t1').classList.add('show');
+      if (t >= 26) document.getElementById('t2').classList.add('show');
+      if (t >= 32) document.getElementById('t3').classList.add('show');
+      if (t >= 34) document.getElementById('t4').classList.add('show');
+      if (t >= 36) document.getElementById('t5').classList.add('show');
+
+      if (t >= 40) {
+        const temp = document.getElementById('temporales');
+        if (temp) temp.remove();
+        const final = document.getElementById('final');
+        final.classList.remove('hidden');
+        final.classList.add('show');
+      }
+    });
+
+    function openMaps() {
+      window.open("https://www.google.com/maps/place/C.+Francisco+Villa+14B,+Valle+de+Anahuac,+55210+Ecatepec+de+Morelos,+M%C3%A9x./@19.519414,-99.0384234,205m/data=!3m1!1e3!4m6!3m5!1s0x85d1fa9777277031:0xb878dfc7d1186b41!8m2!3d19.519807!4d-99.0380502!16s%2Fg%2F11c1btsjpm!5m1!1e2?authuser=0&entry=ttu&g_ep=EgoyMDI1MDcwNy4wIKXMDSoASAFQAw%3D%3D", '_blank');
+    }
+
+    function addToCalendar() {
+      const url = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+                  "&text=Cumpleaños Kevin" +
+                  "&details=Ven a la fiesta de Kevin el 19 de julio a las 2:30 PM." +
+                  "&location=Calle Francisco Villa 14B, Valle de Anáhuac, Ecatepec" +
+                  "&dates=20250719T143000/20250719T163000";
+      window.open(url, '_blank');
+    }
+  </script>
+
+</body>
+</html>
